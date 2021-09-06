@@ -1,4 +1,4 @@
-package _89_Rotate_array
+package _89_rotate_array
 
 func rotate(nums []int, k int) {
 	if len(nums) == 0 {

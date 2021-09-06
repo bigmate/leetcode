@@ -1,4 +1,4 @@
-package _89_Rotate_array
+package _89_rotate_array
 
 import (
 	"testing"
