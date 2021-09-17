@@ -52,6 +52,6 @@ func stackContent(s stack.Stack) string {
 }
 
 func main() {
-	cmb := letterCasePermutation("a1b2")
+	cmb := letterCasePermutation("")
 	fmt.Println(cmb)
 }
