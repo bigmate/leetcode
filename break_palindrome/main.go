@@ -1,19 +1,25 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func breakPalindrome(palindrome string) string {
 	chars := []byte(palindrome)
-	sig := [26]int{}
-	for _, char := range chars {
-		sig[char-'a'] ^= 1
+	if len(chars) <= 1 {
+		return ""
 	}
-	fmt.Println(sig)
-	return ""
+
+	for i := 0; i < len(chars)/2; i++ {
+		if chars[i] != 'a' {
+			chars[i] = 'a'
+			return string(chars)
+		}
+	}
+
+	chars[len(chars)-1] = 'b'
+
+	return string(chars)
 }
 
 func main() {
-	breakPalindrome("abccba")
+	fmt.Println(breakPalindrome("acca"))
 }
