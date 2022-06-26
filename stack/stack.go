@@ -1,50 +1,51 @@
 package stack
 
-type Iterable interface {
-	Next() (data interface{}, exists bool)
+type Iterable[T any] interface {
+	Next() (data T, exists bool)
 }
 
-type iter struct {
-	tmp *node
+type iter[T any] struct {
+	tmp *node[T]
 }
 
-func (i *iter) Next() (data interface{}, exists bool) {
+func (i *iter[T]) Next() (data T, exists bool) {
+	var zeroData T
 	if i.tmp == nil {
-		return nil, false
+		return zeroData, false
 	}
 	current := i.tmp
 	i.tmp = current.next
 	return current.data, true
 }
 
-type Stack interface {
-	Push(data interface{})
-	Pop() (interface{}, bool)
-	Peek() (interface{}, bool)
+type Stack[T any] interface {
+	Push(data T)
+	Pop() (T, bool)
+	Peek() (T, bool)
 	Size() int
-	Iter() Iterable
+	Iter() Iterable[T]
 }
 
-type stackBuffer struct {
-	head *node
-	tail *node
+type stackBuffer[T any] struct {
+	head *node[T]
+	tail *node[T]
 	size int
 }
 
-func (s *stackBuffer) Iter() Iterable {
-	return &iter{tmp: s.head}
+func (s *stackBuffer[T]) Iter() Iterable[T] {
+	return &iter[T]{tmp: s.head}
 }
 
-func New() Stack {
-	return &stackBuffer{}
+func New[T any]() Stack[T] {
+	return &stackBuffer[T]{}
 }
 
-func (s *stackBuffer) Size() int {
+func (s *stackBuffer[T]) Size() int {
 	return s.size
 }
 
-func (s *stackBuffer) Push(data interface{}) {
-	n := &node{data: data}
+func (s *stackBuffer[T]) Push(data T) {
+	n := &node[T]{data: data}
 	s.size++
 	if s.head == nil {
 		s.head = n
@@ -56,9 +57,10 @@ func (s *stackBuffer) Push(data interface{}) {
 	s.tail = n
 }
 
-func (s *stackBuffer) Pop() (interface{}, bool) {
+func (s *stackBuffer[T]) Pop() (T, bool) {
+	var zeroData T
 	if s.tail == nil {
-		return nil, false
+		return zeroData, false
 	}
 	if s.tail == s.head {
 		s.head = nil
@@ -69,15 +71,16 @@ func (s *stackBuffer) Pop() (interface{}, bool) {
 	return n.data, true
 }
 
-func (s *stackBuffer) Peek() (interface{}, bool) {
+func (s *stackBuffer[T]) Peek() (T, bool) {
+	var zeroData T
 	if s.tail == nil {
-		return nil, false
+		return zeroData, false
 	}
 	return s.tail.data, true
 }
 
-type node struct {
-	data interface{}
-	next *node
-	prev *node
+type node[T any] struct {
+	data T
+	next *node[T]
+	prev *node[T]
 }
