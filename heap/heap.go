@@ -49,6 +49,21 @@ func NewMinHeap[T constraints.Ordered](size int) Heap[T] {
 	return h
 }
 
+func NewHeapWithComparator[T any](size int, comparator func(a, b T) bool) Heap[T] {
+	h := &hp[T]{
+		store: make([]T, 0, size),
+	}
+
+	var less func(i, j int) bool
+	less = func(i, j int) bool {
+		return comparator(h.store[i], h.store[j])
+	}
+
+	h.less = less
+
+	return h
+}
+
 func (h *hp[T]) Push(el T) {
 	h.store = append(h.store, el)
 	h.up(h.Len() - 1)
